@@ -2,8 +2,8 @@ const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
   'sistema',
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
+  'sa',
+  'Ig@rCX2',
   {
     host: 'localhost',
     dialect: 'mssql',

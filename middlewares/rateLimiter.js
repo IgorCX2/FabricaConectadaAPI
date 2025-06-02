@@ -4,7 +4,7 @@ const rateLimiter = new RateLimiterMemory({
   duration: 1,
 });
 module.exports = (req, res, next) => {
-    console.log(`Tipo de requisição para ${req.path}: ${req.method} (${req.headers['x-forwarded-for']})`);
+    console.log(`• ${req.path}: ${req.method} (${req.ip})`);
     rateLimiter.consume(req.ip)
         .then(() => next())
         .catch(() => {

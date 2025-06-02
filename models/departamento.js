@@ -1,28 +1,29 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database/usuarios');
-const Departamento = require('./departamento');
 
-const Cargo = sequelize.define('Cargo', {
+const Departamento = sequelize.define('Departamento', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  cargo: {
+  departamento: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  responsavel: {
+  fabrica: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
+  },
+  centro_custo: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: false,
   }
 }, {
-  tableName: 'cargos',
+  tableName: 'departamentos',
   timestamps: false,
 });
-
-Cargo.belongsTo(Departamento, { foreignKey: 'departamento_id', as: 'departamento' });
-Departamento.hasMany(Cargo, { foreignKey: 'departamento_id', as: 'cargos' });
 // sequelize.sync({ alter: true })
 //     .then(() => {
 //         console.log('Banco sincronizado!');
@@ -30,4 +31,6 @@ Departamento.hasMany(Cargo, { foreignKey: 'departamento_id', as: 'cargos' });
 //     .catch((err) => {
 //         console.error('Erro ao sincronizar:', err);
 // });
-module.exports = Cargo;
+// INSERT INTO departamentos (departamento, fabrica, centro_custo) values ('Manutencao', 'Fabrica 1', '700700'), ('Manutencao', 'Fabrica 1', '700701'), ('Manutencao', 'Fabrica 1', '700702'), ('Qualidade', 'Fabrica 1', '600636')
+
+module.exports = Departamento;

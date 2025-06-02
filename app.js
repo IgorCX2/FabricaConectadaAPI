@@ -6,7 +6,10 @@ const session = require('express-session');
 const rateLimiter = require('./middlewares/rateLimiter');
 const app = express();
 
-const whitelist = ['http://localhost:3000', 'https://aprendacomeduke.com.br'];
+const whitelist = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+];
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -23,17 +26,16 @@ app.use(helmet({
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) {
-      callback(null, false);
-    } else if (whitelist.indexOf(origin) !== -1) {
+    if (!origin || whitelist.includes(origin)) {
       callback(null, origin);
     } else {
-      console.log(`Origin not allowed by CORS policy: ${origin}`);
-      callback(new Error('Acesso negado pela política!'));
+      console.log(`⛔ Origin not allowed by CORS policy: ${origin}`);
+      callback(new Error('Acesso negado pela política de CORS!'));
     }
   },
   credentials: true,
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -50,5 +52,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/sistema', require('./routes/sistema'));
 
 app.use('/api/qualidade', require('./routes/qualidade'));
+// app.use('/api/manutencao', require('./routes/manutencao'));
+
 
 module.exports = app;
